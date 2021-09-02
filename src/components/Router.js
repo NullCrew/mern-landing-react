@@ -6,13 +6,13 @@ import {
 import About from './About';
 import Contact from './Contact';
 import Error404 from './Error404';
-import Home from './Home';
+import HomePage from './Home';
 
 function Router() {
-    return(
+    return (
         <div>
             <Switch>
-                <Route exact path='/' component={Home} />
+                <Route exact path='/' component={HomePage} />
                 <Route path='/about' component={About} />
                 <Route path='/contact' component={Contact} />
                 <Route path='/404' component={Error404} />

@@ -8,6 +8,7 @@ import mongoLogo from "../assets/MongoDB.png";
 import reactLogo from "../assets/react.svg";
 import { Link } from "react-router-dom";
 
+
 function HeroSection() {
     return (
         <div className="hero" style={{ width: '100%' }}>
