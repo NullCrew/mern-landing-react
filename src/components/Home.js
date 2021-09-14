@@ -8,6 +8,7 @@ import mongoLogo from "../assets/MongoDB.png";
 import reactLogo from "../assets/react.svg";
 import { Component } from "react";
 import Footer from "./Footer";
+import axios from "axios";
 
 class HomePage extends Component {
 
@@ -17,6 +18,10 @@ class HomePage extends Component {
 
         this.state = {
             showModal: false,
+            name: '',
+            email: '',
+            phone: '',
+            college: '',
         };
 
         this.HeroSection = this.HeroSection.bind(this);
@@ -26,6 +31,8 @@ class HomePage extends Component {
         this.FormModal = this.FormModal.bind(this);
         this.handleModal = this.handleModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
     }
 
     showBool = true;
@@ -44,21 +51,74 @@ class HomePage extends Component {
         this.setState({ showModal: false });
     }
 
+    handleSubmit() {
+        const { name, email, phone, college } = this.state;
+
+        const bodyData = {
+            name,
+            email,
+            phone,
+            college,
+        }
+        console.log(bodyData);
+
+        // ? Make axios call
+        // Make sure you are using https
+        // Make sure you not using localhost
+        // [Backend] Make sure you have allowed cors to all sites
+        axios.post('https://9809-117-96-226-145.ngrok.io/interests', bodyData)
+            .then((response) => {
+                console.log(response.data);
+                this.hideModal();
+            })
+            .catch((error) => {
+                console.log(error.message);
+                console.log(error.request);
+                console.log(error.response);
+                this.hideModal();
+            });
+
+        // * On success, hide modal and show success message
+
+        // ! On failure, show error message
+    }
+
+    handleInputChange(event) {
+        this.setState({ [event.target.name]: event.target.value });
+    }
+
     FormModal() {
         return (
-            <Modal show={this.state.showModal} onHide={this.hideModal}>
+            <Modal show={this.state.showModal} onHide={this.hideModal} className="px-4">
                 <Modal.Header closeButton onClick={this.handleModal}>
-                    <Modal.Title>Modal title</Modal.Title>
+                    <Modal.Title>Get Started with your Registration</Modal.Title>
                 </Modal.Header>
 
                 <Modal.Body>
-                    <p>Modal body text goes here.</p>
-                </Modal.Body>
+                    <div>
+                        <form>
+                            <div className="mb-3">
+                                <label for="name" className="form-label">Name<sup className="text-danger">*</sup></label>
+                                <input type="text" className="form-control" name="name" id="name" onChange={this.handleInputChange} required />
+                            </div>
+                            <div className="mb-3">
+                                <label for="college" className="form-label">College</label>
+                                <input type="text" className="form-control" name="college" id="college" onChange={this.handleInputChange} />
+                            </div>
+                            <div className="mb-3">
+                                <label for="email" className="form-label">Email address<sup className="text-danger">*</sup></label>
+                                <input type="email" className="form-control" id="email" name="email" onChange={this.handleInputChange} aria-describedby="emailHelp" required />
+                                <div id="emailHelp" className="form-text">We'll never share your email with anyone e    lse.</div>
+                            </div>
+                            <div className="mb-3">
+                                <label for="phone" className="form-label">Phone<sup className="text-danger">*</sup></label>
+                                <input type="text" className="form-control" name="phone" onChange={this.handleInputChange} id="phone" required />
+                            </div>
+                            <button type="button" className="btn btn-primary w-100" onClick={this.handleSubmit}>Submit</button>
+                        </form>
+                    </div>
 
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={this.handleModal}>Close</Button>
-                    <Button variant="primary">Save changes</Button>
-                </Modal.Footer>
+                </Modal.Body>
             </Modal>
         )
     }
