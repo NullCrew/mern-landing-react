@@ -68,19 +68,17 @@ class HomePage extends Component {
         // [Backend] Make sure you have allowed cors to all sites
         axios.post('https://9809-117-96-226-145.ngrok.io/interests', bodyData)
             .then((response) => {
+                // * On success, hide modal and show success message
                 console.log(response.data);
                 this.hideModal();
             })
             .catch((error) => {
+                // ! On failure, show error message
                 console.log(error.message);
                 console.log(error.request);
                 console.log(error.response);
                 this.hideModal();
             });
-
-        // * On success, hide modal and show success message
-
-        // ! On failure, show error message
     }
 
     handleInputChange(event) {
